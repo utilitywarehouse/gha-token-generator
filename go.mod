@@ -1,6 +1,6 @@
 module github.com/steveh1991/gha-token-generator
 
-go 1.17
+go 1.22
 
 require (
 	github.com/golang-jwt/jwt v3.2.1+incompatible
