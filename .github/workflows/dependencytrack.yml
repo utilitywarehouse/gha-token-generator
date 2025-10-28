@@ -1,14 +1,25 @@
 
 name: DependencyTrack Upload SBOM
 on: push
+permissions:
+  contents: read
+
 jobs:
   dependencytrack-sbom-upload:
+    permissions:
+      actions: write  # for anchore/sbom-action to upload workflow artifacts
+      contents: write  # for anchore/sbom-action to upload & delete release assets
     runs-on: ubuntu-latest
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+      with:
+        egress-policy: audit
+
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
     - name: Anchore SBOM Action
-      uses: anchore/sbom-action@v0.15.10
+      uses: anchore/sbom-action@ab5d7b5f48981941c4c5d6bf33aeb98fe3bae38c # v0.15.10
       with:
         image: grafana/grafana-oss:10.4.1
         artifact-name: sbom.cdx.json
